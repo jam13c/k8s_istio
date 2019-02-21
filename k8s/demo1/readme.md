@@ -13,9 +13,10 @@
 2. Deploy a replicaset ```kubectl apply -f 02_replicaset.yaml```
     - Manages a group of pod replicas across a cluster
     - k8s will monitor pods and try to ensure the number of copis running matches
-    - `kind` is ReplicaSet
-    - `spec` section has a `selector` which provides labels that will be used to identify pods managed
-    - `template` describes the pods this replicaset will manage. Has to specify everything a pod can, so has its own  `metadata` section, and its own `spec` for the pods themself.
+    - define:
+        - `kind` is ReplicaSet
+        - `spec` section has a `selector` which provides labels that will be used to identify pods managed
+        - `template` describes the pods this replicaset will manage. Has to specify everything a pod can, so has its own  `metadata` section, and its own `spec` for the pods themself.
     - get the rs `kubectl get rs nginx` list the pods `kubectl get pods`
     - delete one pod `kubectl delete pod nginx-****` and show new one recreated
     - delete rs `kubectl delete rs nginx`
