@@ -6,9 +6,9 @@
             - `label` otherk8s constructs can do matches on these
             - `annotation` provideinformation to users/tools. not used to identify the pod
         - `spec` desired state of the resource.
-    - List the pod `kubectl get pod nginx` 
-    - exec a bash terminal `kubectl exec -it nginx -- bash` 
-    - Delete `kubectl delete pod nginx`
+    - List the pod `kubectl get pod echoweb` 
+    - exec a bash terminal `kubectl exec -it echoweb -- bash` 
+    - Delete `kubectl delete pod echoweb`
 
 2. Deploy a replicaset ```kubectl apply -f 02_replicaset.yaml```
     - Manages a group of pod replicas across a cluster
@@ -17,9 +17,25 @@
         - `kind` is ReplicaSet
         - `spec` section has a `selector` which provides labels that will be used to identify pods managed
         - `template` describes the pods this replicaset will manage. Has to specify everything a pod can, so has its own  `metadata` section, and its own `spec` for the pods themself.
-    - get the rs `kubectl get rs nginx` list the pods `kubectl get pods`
-    - delete one pod `kubectl delete pod nginx-****` and show new one recreated
-    - delete rs `kubectl delete rs nginx`
+    - get the rs `kubectl get rs echoweb` list the pods `kubectl get pods`
+    - delete one pod `kubectl delete pod echoweb-****` and show new one recreated
+    - delete rs `kubectl delete rs echoweb`
 
 3. Deploy a deployment `kubectl apply -f 03_deployment.yaml`
+    - Higher level manages replixasets
+    - Describes desired state
+    - list the pods `kubectl get pods` and the deployment `kubectl get deployment echoweb`
+
+4. Deploy the upgrade: `kubectl apply -f 04_deployment-upgrade.yaml`
+    - quickly list the deployment again to watch it upgrade
+
+5. Deploy a service: `kubectl apply -f 05_service.yaml`
+    - Passed in the pod id on env vars
+    - Includes a `NodePort` service to expose it to host on port 32003
+    - Browse to `http://localhost:32003`
+
+6. Deploy the upgrade: `kubectl apply -f 06_service-upgrade.yaml`
+    - Upgrades deployment to v2
+    - No change to service
+    - Watch upgrade to  new version of app on `http://localhost:32003`
 

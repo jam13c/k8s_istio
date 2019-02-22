@@ -1,11 +1,12 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nginx
+  name: echoweb
   labels:
     app: webserver
   annotations:
-    deployment.kubernetes.io/change-cause: "Upgrade nginx to 1.13.10"
+    deployment.kubernetes.io/revision: "2"
+    deployment.kubernetes.io/change-cause: "Upgrade echoweb to 2.0"
 spec:
   replicas: 3
   selector:
@@ -22,8 +23,8 @@ spec:
         app: webserver
     spec:
       containers:
-        - name: nginc
-          image: nginx:1.13.10
+        - name: echoweb
+          image: jam13c/echoweb:2.0
           ports:
             - containerPort: 80
             

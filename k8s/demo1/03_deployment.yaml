@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nginx
+  name: echoweb
   labels:
     app: webserver
   annotations:
@@ -22,8 +22,8 @@ spec:
         app: webserver
     spec:
       containers:
-        - name: nginc
-          image: nginx:1.7.9
+        - name: echoweb
+          image: jam13c/echoweb:1.0
           ports:
             - containerPort: 80
             

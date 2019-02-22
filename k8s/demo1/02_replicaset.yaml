@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: nginx
+  name: echoweb
   labels:
     app: webserver
   annotations:
-    riskfirst.com/pod-info: "Updated nginx to 1.7.9"
+    riskfirst.com/pod-info: "Deployed echoweb v1"
 spec:
   replicas: 3
   selector:
@@ -17,7 +17,7 @@ spec:
         app: webserver
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.7.9
+        - name: echoweb
+          image: jam13c/echoweb:1.0
           ports:
             - containerPort: 80
