@@ -51,3 +51,17 @@
     - apply update `kubectl apply -f 09_statefulset-update.yaml` 
     - list pods `kubectl get pods` show downsized in meaningful way
 
+9. Deploy pod with volume mount `kubectl apply -f 10_volume-share.yaml`
+    - bash in command window `kubectl exec -it nginxdeb -c nginx-container -- bash`
+    - Show mount created with `ls` and `cd usr/share/data`
+    - show content of file `cat hello.txt`
+    - delete all pods `kubectl delete pods --all`
+    - Redeploy without write `kubectl apply -f 11_volume-share-nowrite.yaml`
+    - bash in command window `kubectl exec -it nginxdeb -c nginx-container -- bash`
+    - Data has gone
+
+
+
+
+
+
