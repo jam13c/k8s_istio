@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: echoweb  
+  labels:
+    app: webserver
+  annotations:
+    riskfirst.com/pod-info: "Deployed echoweb v1"
+spec:
+  containers:
+    - name: echoweb
+      image: jam13c/echoweb:1.0
+      ports:
+      - containerPort: 80

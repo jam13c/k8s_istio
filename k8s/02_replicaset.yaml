@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: echoweb
+  labels:
+    app: webserver
+  annotations:
+    riskfirst.com/pod-info: "Deployed echoweb v1"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+        - name: echoweb
+          image: jam13c/echoweb:1.0
+          ports:
+            - containerPort: 80

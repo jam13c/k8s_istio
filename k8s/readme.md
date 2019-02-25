@@ -1,0 +1,53 @@
+1. deploy a pod: `kubectl apply -f 01_pod.yaml`
+    - define:
+        - `apiVersion` - controls the version of the k8s api used
+        - `kind` - type of resource being managed
+        - `metadata` - information about the resource that the YAML is defining
+            - `label` otherk8s constructs can do matches on these
+            - `annotation` provideinformation to users/tools. not used to identify the pod
+        - `spec` desired state of the resource.
+    - List the pod `kubectl get pod echoweb` 
+    - exec a bash terminal `kubectl exec -it echoweb -- bash` 
+    - Delete `kubectl delete pod echoweb`
+
+2. Deploy a replicaset `kubectl apply -f 02_replicaset.yaml`
+    - Manages a group of pod replicas across a cluster
+    - k8s will monitor pods and try to ensure the number of copis running matches
+    - define:
+        - `kind` is ReplicaSet
+        - `spec` section has a `selector` which provides labels that will be used to identify pods managed
+        - `template` describes the pods this replicaset will manage. Has to specify everything a pod can, so has its own  `metadata` section, and its own `spec` for the pods themself.
+    - get the rs `kubectl get rs echoweb` list the pods `kubectl get pods`
+    - delete one pod `kubectl delete pod echoweb-****` and show new one recreated
+    - delete rs `kubectl delete rs echoweb`
+
+3. Deploy a deployment `kubectl apply -f 03_deployment.yaml`
+    - Higher level manages replixasets
+    - Describes desired state
+    - list the pods `kubectl get pods` and the deployment `kubectl get deployment echoweb`
+
+4. Deploy the upgrade: `kubectl apply -f 04_deployment-upgrade.yaml`
+    - quickly list the deployment again to watch it upgrade
+
+5. Deploy a service: `kubectl apply -f 05_service.yaml`
+    - Passed in the pod id on env vars
+    - Includes a `NodePort` service to expose it to host on port 32003
+    - Browse to `http://localhost:32003`
+
+6. Deploy the upgrade: `kubectl apply -f 06_service-upgrade.yaml`
+    - Upgrades deployment to v2
+    - No change to service
+    - Watch upgrade to  new version of app on `http://localhost:32003`
+
+7. Deploy daemonset `kubectl apply -f 07_daemonset.yaml`
+    - list daemonset `kubectl get ds` it exists
+    - list pods `kubectl get pods` no pods created
+    - point out nodeSelector and label node `kubectl label nodes docker-for-desktop needsdaemon=true`
+    - reapply daemonset, pod exists
+
+8. Deploy stateful set `kubectl apply -f 08_statefulset.yaml`
+    - list statefulset `kubectl get statefulset`
+    - list pods `kubectl get pods` show ordered list
+    - apply update `kubectl apply -f 09_statefulset-update.yaml` 
+    - list pods `kubectl get pods` show downsized in meaningful way
+
