@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-config
+  namespace: default
+data:
+  key1: value1
+  key2: value2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-example
+  labels:
+    app: webserver
+spec:
+  containers:
+    - name: configmap-example
+      image: busybox
+      command: ["/bin/sh", "-c", "ls /etc/config; cat etc/config/key1 ; echo"]
+      volumeMounts:
+        - name: config-volume
+          mountPath: etc/config
+  volumes:
+    - name: config-volume
+      configMap:
+        name: custom-config

@@ -60,6 +60,32 @@
     - bash in command window `kubectl exec -it nginxdeb -c nginx-container -- bash`
     - Data has gone
 
+10. Deploy pv, pvc, and pod with persistent storage `kubectl apply -f 12_persistent-volume.yaml`
+    - show pv created `kubectl get pv` and claim `kubectl get pvc`
+    - Pod has storage. `kubectl exec -it nginx -- bash`
+    - cd to dir `cd usr/shared/data/`
+    - write a file `echo Hello World > hi.txt`
+    - delete the pod `delete pod nginx`
+
+11. Deploy a stateful set mounted to same storage `kubectl apply -f 13_persistent-volume-statefulset.yaml`
+    - Show the pods created `kubectl get pods`
+    - bash to one. `kubectl exec -it nginx-1 -- bash`
+    - cd to dir `cd usr/shared/data/`
+    - data has persisted `ls` and `cat hi.txt`
+    - delete stateful set `kubectl delete -f 13_persistent-volume-statefulset.yaml`
+    - delete pv & pvc `kubectl delete pvc -all` and `kubectl delete pv -all`
+
+12. Deploy a configmap `kubectl apply -f 14_configmap.yaml`
+    - Pod has run and completed. See logs `kubectl logs configmap-example`
+    - delete it `kubectl delete -f 14_configmap.yaml`
+    - Deploy web app with configmap as env `kubectl apply -f 15_configmap-env.yaml`
+    - port forward `kubectl port-forward echoweb 81:80`
+    - Browse to http://localhost:81 to see config var passed in to `POD_ID`
+    - delete it `kubectl delete -f 15_configmap-env.yaml`
+
+    
+
+
 
 
 
