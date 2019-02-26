@@ -83,6 +83,21 @@
     - Browse to http://localhost:81 to see config var passed in to `POD_ID`
     - delete it `kubectl delete -f 15_configmap-env.yaml`
 
+13. Deploy pod with liveness probe: `kubectl apply -f 16_liveness.yaml`
+    - pod will report unhelthy after 15 seconds and be restarted
+    - port forward to it `kubectl port-forward echoweb 81:80` and browse http://localhost:81/health
+    - watch for a while it will report unhealthy. Pod restarts
+    - look at describe `kubectl describe pod echoweb`
+    - look  at number of restarts `kubectl get pods`
+    - delete it `kubectl delete pod -f 16_liveness.yaml`
+
+14. Deploy pod with readiness probe: `kubectl apply -f 17_readiness.yaml`
+    - pod will report healthy after 15 seconds
+    - look at pods `kubectl get pods` and pod is not yet ready
+    - describe it `kubectl describe pod echoweb` andits reporting readiness probe reports unhelthy
+    - eventually it will be ready
+    - delete it `kubectl delete pod -f 17_readiness.yaml`
+
     
 
 
