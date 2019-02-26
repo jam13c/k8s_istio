@@ -1,24 +1,19 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: productpage
-spec:
-  hosts:
-  - productpage
-  http:
-  - route:
-    - destination:
-        host: productpage
-        subset: v1
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
   name: reviews
 spec:
   hosts:
-  - reviews
+    - reviews
   http:
+  - match:
+    - headers:
+        end-user:
+          exact: jamie
+    route:
+    - destination:
+        host: reviews
+        subset: v2
   - route:
     - destination:
         host: reviews
@@ -32,21 +27,19 @@ spec:
   hosts:
   - ratings
   http:
+  - match:
+    - headers:
+        end-user:
+          exact: jamie
+    fault:
+      delay:
+        percent: 100
+        fixedDelay: 7s
+    route:
+    - destination:
+        host: ratings
+        subset: v1
   - route:
     - destination:
         host: ratings
         subset: v1
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: details
-spec:
-  hosts:
-  - details
-  http:
-  - route:
-    - destination:
-        host: details
-        subset: v1
----

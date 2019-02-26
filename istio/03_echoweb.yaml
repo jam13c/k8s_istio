@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoweb-svc
+  labels:
+    app: echoweb
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  selector:
+    app: echoweb-app
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: echoweb-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: echoweb-app
+        version: v1
+    spec:
+      containers:
+      - image: jam13c/echoweb:1.0
+        imagePullPolicy: IfNotPresent
+        name: echoweb
+        ports:
+        - containerPort: 80
+
