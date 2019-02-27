@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: echoweb
+  name: echoweb-rs
   labels:
     app: webserver
   annotations:

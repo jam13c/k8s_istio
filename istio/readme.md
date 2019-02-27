@@ -7,9 +7,9 @@
 
 
 3. Verfy installation
-   - ```kubectl get svc -n istio-system```
-   - ```kubectl get pods -n istio-system```
-   - cluster has automatic sidecar injection, so label `default` namespace with istio-injection=enabled: ```kubectl label namespace default istio-injection=enabled```
+   - `kubectl get svc -n istio-system`
+   - `kubectl get pods -n istio-system`
+   - cluster has automatic sidecar injection, so label `default` namespace with istio-injection=enabled: `kubectl label namespace default istio-injection=enabled`
 
 
 4. Deploy v1 of echoweb: `kubectl apply -f 03_echoweb.yaml`
@@ -17,22 +17,25 @@
      - Deploy the istio parts `kubectl apply -f 04_echoweb-istio.yaml`
      - Now has gateway and virtual service which points to the echoweb service
      - browse to the app http://localhost:81
+     - list pods `kubectl get pods`
      
 5. Upgrade the app: `kubectl apply -f 05_echoweb-upgrade.yaml`
      - New deployment exists with pods `kubectl get pods`
      - Traffic still going to v1 due to destination rule
      - Deploy a new destination rule tocanary the release `kubectl apply -f 06_echoweb-canary.yaml`
      - traffic now 25%to new app http://localhost:81
+     - cleanup `cleanup-demo1.bat`
 
 
 6. Deploy bookinfo: `kubectl apply -f 07_bookinfo.yaml`
      - Deploys service & deployment for all components
-     - confirm services & pods all up and running `kubectl get svc` & `kubectl get pods`
+     - confirm services & pods all up and running `kubectl get svc,pods`
      - Deploy istio gateway & virtual service: `kubectl apply -f 08_bookinfo-gateway.yaml`
      - Create derfault destination rules for all services to use mTLS: `kubectl apply -f 09_destination-rule-all-mtls.yaml`
      - browse to the app http://localhost:81/productpage
      - refresh a few times, requests are directed evenly between versions
      - Deploy Virtual services for all v1: `kubectl apply -f 10_virtual-service-all-v1.yaml`
+     - refresh a few times - all going to v1
 
 7. Test v2 of reviews for a specific user: `kubectl apply -f 11_virtual-service-reviews-test-v2.yaml`
      - refresh page. Still v1
@@ -58,13 +61,13 @@
      - not just on ingress. Can be applied between services
 
 11. Port forward to Jaeger: `kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=jaeger -o jsonpath='{.items[0].metadata.name}') 16686:16686`
-     - browse to http://localhost:16886
+     - browse to http://localhost:16686
 
 12. Port forward to prometheus: `kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=prometheus -o jsonpath='{.items[0].metadata.name}') 9090:9090 `
      - browse to http://localhost:9090/graph?g0.range_input=1h&g0.expr=istio_request_duration_seconds_bucket&g0.tab=0
 
 13. Port forward to Grafana: `kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000`
-     - browse to http://localhost:3000/d/1/istio-mesh-dashboard?refresh=5s&orgId=1
+     - browse to http://localhost:3000/d/1/istio-mesh-dashboard?refresh=5s&orgId=1&from=now-30m&to=now
 
 14. Port forward to service graph: `kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') 8088:8088`
      - browse to http://localhost:8088/force/forcegraph.html?time_horizon=60s&filter_empty=true
